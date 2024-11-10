@@ -1,0 +1,13 @@
+flutter_native_splash:
+  color: "#FFFFFF"
+  color_dark: "#272727"
+  image: lib/assets/logos/Clean Up app.svg
+  dark_image: lib/assets/logos/Clean Up app.svg
+
+  android_12:
+    color: "#FFFFFF"
+    color_dark: "#272727"
+    image: lib/assets/logos/Clean Up app.svg
+    dark_image: lib/assets/logos/Clean Up app.svg
+
+  web: false
