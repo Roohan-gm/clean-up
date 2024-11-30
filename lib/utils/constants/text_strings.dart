@@ -5,13 +5,13 @@ class RTexts{
   static const String appTitle = "Clean Up";
 
   // -- OnBoarding Texts
-  static const String onBoardingTitle1 = "Choose your product";
-  static const String onBoardingTitle2 = "Select Payment Method";
-  static const String onBoardingTitle3 = "Deliver at your door step";
+  static const String onBoardingTitle1 = "Customize your service";
+  static const String onBoardingTitle2 = "Choose your cleaner";
+  static const String onBoardingTitle3 = "Your Cleaning Service is on the Way!";
 
-  static const String onBoardingSubTitle1 = "Welcome to a world of Limitless Choices - Your Perfect Product Awaits!";
-  static const String onBoardingSubTitle2 = "For Seamless Transactions, Choose Your Payment Path - your Convenience, Our Priority!";
-  static const String onBoardingSubTitle3 = "From Our Doorstep to Yours - Swift, Secure, and Contactless Delivery!";
+  static const String onBoardingSubTitle1 = "Step into Personalized Perfection - Tailor Your Service to Fit Your Needs!";
+  static const String onBoardingSubTitle2 = "Select Your Ideal Cleaner - The Perfect Match for Your Needs!";
+  static const String onBoardingSubTitle3 = "Relax and Enjoy - Our Professionals Are Taking Care of Everything!";
 
   // -- Sign up
   static const String termsAndConditionCheckbox = "By signing up you are agreeing to our terms & conditions and privacy policy ";
@@ -20,6 +20,44 @@ class RTexts{
   // -- Sign in
   static const String noAccountText  = "Don’t have an Account?";
   static const String rememberMeCheckboxText= "Remember me and keep me logged in";
+
+
+  // -- Authentication form text
+  static const String email= "Email";
+  static const String firstName= "First Name";
+  static const String lastName= "Last Name";
+  static const String password= "Password";
+  static const String newPassword= "New Password";
+  static const String username= "Username";
+  static const String phoneNo= "Phone Number";
+  static const String rememberMe= "Remember Me";
+  static const String forgetPassword= "Forget Password";
+  static const String signIn= "Sign In";
+  static const String createAccount= "Create Account";
+  static const String iAgreeTo= "I agree to";
+  static const String privacyPolicy= "Privacy Policy";
+  static const String termsOfUse= "Terms of use";
+  static const String and= "&";
+  static const String verificationCode = "Verification code";
+  static const String resendEmail= "Resend Email";
+  static const String resendEmailIn= "Resend email in";
+
+  // -- Authentication Heading Text
+  static const String loginTitle = "Welcome back,";
+  static const String loginSubtitle = "Experience Seamless Cleanliness and Exceptional Flexibility.";
+  static const String signupTitle = "Let's create your account";
+  static const String forgetPasswordTitle = "Forget Password";
+  static const String forgetPasswordSubtitle = "Don't worry sometime people can forget too, enter your email and we will send you a password reset Link.";
+  static const String changePasswordTitle = "Password Reset Email Sent";
+  static const String changePasswordSubtitle = "Your Account Security is Our Priority! we've Sent YOu a Secure Link to Safely Change Your Password and Keep Your Account Protected";
+  static const String confirmEmail = "Verify your email address!";
+  static const String confirmEmailSubtitle = "Congratulations! Your Account Awaits. Confirm Your Email to Book Now and Unlock a World of Exceptional Cleanliness and Tailored Service.";
+  static const String emailNotReceivedMessage = "Didn't get the email? CHeck your junk/spam or resend it.";
+  static const String yourAccountCreatedTitle = "Your account has been successfully created!";
+  static const String yourAccountCreatedSubtitle = "Welcome to your Premier Cleaning Companion: Your account is set up, Dive into the Ease of Effortless Cleanliness!";
+  static const String rContinue = "Continue";
+  static const String submit = "Submit";
+  static const String done = "Done";
 
   // -- Select Service
   static const String locationAppbarText  = "Your Location";
@@ -34,6 +72,20 @@ class RTexts{
 
   // -- Rating
   static const String ratCleanerTitle  = "Rate your cleaner";
+
+  // -- appbar
+  static const String homeAppbarTitle  = "Your Location";
+
+  // -- Home
+  static const String homeTitle  = "Services";
+  static const String roomTitle  = "Room";
+  static const String bathroomTitle  = "Bathroom";
+  static const String kitchenTitle  = "Kitchen";
+  static const String roomSubtitle  = "Refresh your living space.";
+  static const String bathroomSubtitle  = "Sparkling clean bathroom.";
+  static const String kitchenSubtitle  = "Pristine and spotless kitchen.";
+  static const String amount  = "\$22";
+  static const String checkout  = "Checkout";
 
 
 
