@@ -109,7 +109,7 @@ class EarningsPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text("\35",
+                Text("35",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         fontSize: 20,

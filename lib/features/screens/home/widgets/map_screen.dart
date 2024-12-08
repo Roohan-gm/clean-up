@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:clean_up/utils/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -61,7 +62,9 @@ class _MapScreenState extends State<MapScreen> {
         _myLocation = currentLating;
       });
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 

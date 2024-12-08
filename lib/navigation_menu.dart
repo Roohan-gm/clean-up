@@ -1,4 +1,3 @@
-import 'package:clean_up/app_controller.dart';
 import 'package:clean_up/features/screens/earnings_page/earnings_page.dart';
 import 'package:clean_up/features/screens/offer_screen/offer_screen.dart';
 import 'package:clean_up/features/screens/order_history/order_history.dart';

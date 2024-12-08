@@ -1,6 +1,7 @@
 import 'package:clean_up/common/widgets/appbar/appbar.dart';
 import 'package:clean_up/features/screens/home/widgets/all_services.dart';
 import 'package:clean_up/features/screens/home/widgets/bottom_service_sheet.dart';
+import 'package:clean_up/features/screens/login/login.dart';
 import 'package:clean_up/utils/constants/colors.dart';
 import 'package:clean_up/utils/constants/sizes.dart';
 import 'package:clean_up/utils/constants/text_strings.dart';
@@ -124,9 +125,14 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class CustomHomeNavigationDrawer extends StatelessWidget {
+class CustomHomeNavigationDrawer extends StatefulWidget {
   const CustomHomeNavigationDrawer({super.key});
 
+  @override
+  State<CustomHomeNavigationDrawer> createState() => _CustomHomeNavigationDrawerState();
+}
+
+class _CustomHomeNavigationDrawerState extends State<CustomHomeNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -199,7 +205,11 @@ class CustomHomeNavigationDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("Log out"),
-            onTap: () {},
+            onTap: () async {
+              // await supabase.auth.signOut();
+              if(!mounted) return;
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
+            },
           ),
         ],
       ),

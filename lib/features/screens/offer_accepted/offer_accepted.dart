@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'package:clean_up/features/screens/offer_screen/offer_screen.dart';
-import 'package:clean_up/features/screens/online_screen/online_screen.dart';
 import 'package:clean_up/navigation_menu.dart';
 import 'package:clean_up/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:latlong2/latlong.dart';
 import 'Widgets/cancel_offer_button.dart';
 import 'Widgets/client_contact_card.dart';

@@ -1,3 +1,5 @@
+import 'package:clean_up/features/screens/login/login.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +26,9 @@ class AppController extends GetxController {
       isRegistrationComplete.value = prefs.getBool('isRegistrationComplete') ?? false;
       _navigateToCorrectScreen();
     } catch (e) {
-      print('Error initializing app state: $e');
+      if (kDebugMode) {
+        print('Error initializing app state: $e');
+      }
       Get.offAllNamed('/login'); // Fallback to login on error
     }
   }
@@ -62,7 +66,9 @@ class AppController extends GetxController {
       await prefs.setString('lastSelectedMode', lastSelectedMode.value);
       await prefs.setBool('isRegistrationComplete', isRegistrationComplete.value);
     } catch (e) {
-      print('Error saving app state: $e');
+      if (kDebugMode) {
+        print('Error saving app state: $e');
+      }
     }
   }
 
@@ -84,7 +90,8 @@ class AppController extends GetxController {
   Future<void> completeOnboarding() async {
     isOnboardingCompleted.value = true;
     await _saveAppState();
-    Get.offAllNamed('/login');
+    Get.off(()=>const LoginScreen());
+    // Get.offAllNamed('/login');
   }
 
   // Switch between User and Cleaner mode

@@ -28,6 +28,9 @@ class RImages{
   static const String bathroomPic = 'assets/images/services/2.png';
   static const String kitchenPic = 'assets/images/services/3.png';
 
+  // Docer Animation
+  static const String lottieAnimation = 'assets/images/animations/LottieAnimation.json';
+
 
 
 

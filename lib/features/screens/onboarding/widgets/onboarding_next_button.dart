@@ -1,10 +1,10 @@
-import 'package:clean_up/features/controllers%20onboarding/onboarding_controller.dart';
 import 'package:clean_up/utils/helpers/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/device/device_utility.dart';
+import '../../../controllers/onboarding/onboarding_controller.dart';
 
 class OnBoardingNextButton extends StatelessWidget {
   const OnBoardingNextButton({
