@@ -2,11 +2,7 @@ import 'package:clean_up/features/screens/accepted_cleaner/widgets/cancel_button
 import 'package:clean_up/features/screens/accepted_cleaner/widgets/cleaner_info_contact_contact.dart';
 import 'package:clean_up/features/screens/accepted_cleaner/widgets/map_configration_accepted_cleaner.dart';
 import 'package:clean_up/features/screens/accepted_cleaner/widgets/service_cost_card.dart';
-import 'package:clean_up/utils/constants/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class AcceptedCleaner extends StatefulWidget {

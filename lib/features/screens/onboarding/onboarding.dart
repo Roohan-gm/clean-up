@@ -1,4 +1,3 @@
-import 'package:clean_up/app_controller.dart';
 import 'package:clean_up/features/screens/onboarding/widgets/onboarding_dot_navigation.dart';
 import 'package:clean_up/features/screens/onboarding/widgets/onboarding_next_button.dart';
 import 'package:clean_up/features/screens/onboarding/widgets/onboarding_page.dart';
@@ -7,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/text_strings.dart';
-import '../../controllers onboarding/onboarding_controller.dart';
+
+import '../../controllers/onboarding/onboarding_controller.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -15,7 +15,6 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(OnBoardingController());
-    final appController = Get.find<AppController>();
 
     return Scaffold(
         body: Stack(children: [

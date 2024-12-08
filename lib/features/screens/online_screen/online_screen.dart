@@ -1,8 +1,6 @@
 import 'package:clean_up/features/screens/offer_accepted/offer_accepted.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/image_strings.dart';
@@ -110,9 +108,7 @@ class _OfferList extends StatelessWidget {
 }
 
 class _SearchingOfferScreen extends StatelessWidget {
-  const _SearchingOfferScreen({
-    super.key,
-  });
+  const _SearchingOfferScreen();
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/constants/image_strings.dart';
+import '../login/login.dart';
 import '../offline_screen/offline_screen.dart';
 import '../online_screen/online_screen.dart';
 
@@ -64,9 +65,14 @@ class _OfferScreenState extends State<OfferScreen> {
   }
 }
 
-class CustomNavigationDrawer extends StatelessWidget {
+class CustomNavigationDrawer extends StatefulWidget {
   const CustomNavigationDrawer({super.key});
 
+  @override
+  State<CustomNavigationDrawer> createState() => _CustomNavigationDrawerState();
+}
+
+class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -139,7 +145,11 @@ class CustomNavigationDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("Log out"),
-            onTap: () {},
+            onTap: () async {
+              // await supabase.auth.signOut();
+              if(!mounted) return;
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
+            },
           ),
         ],
       ),

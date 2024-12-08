@@ -54,6 +54,10 @@ dependencies:
   sliding_sheet2: ^2.0.1
   stop_watch_timer: ^3.2.1
   shared_preferences: ^2.3.3
+  flutter_dotenv: ^5.2.1
+  lottie: ^3.1.3
+  connectivity_plus: ^5.0.2
+  awesome_snackbar_content: ^0.1.4
 
 
 
@@ -86,6 +90,8 @@ flutter:
     - assets/logo/PNG 2.png
     - assets/logo/PNG 1.png
     - assets/images/avatar/avatar.png
+    - assets/images/animations/LottieAnimation.json
+    - .env
 
   # fonts:
   #   - family: Schyler
