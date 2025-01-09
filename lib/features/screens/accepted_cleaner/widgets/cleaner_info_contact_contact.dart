@@ -20,7 +20,7 @@ class CleanerInfoContactCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundImage: AssetImage(RImages.avatar),
+          backgroundImage: AssetImage(RImages.user),
           radius: 30,
         ),
         title: Text(

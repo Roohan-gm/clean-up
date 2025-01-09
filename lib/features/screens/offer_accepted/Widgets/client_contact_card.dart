@@ -20,7 +20,7 @@ class ClientContactCard extends StatelessWidget {
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         leading: CircleAvatar(
-          backgroundImage: AssetImage(RImages.avatar),
+          backgroundImage: AssetImage(RImages.user),
           radius: 30,
         ),
         title: Text(

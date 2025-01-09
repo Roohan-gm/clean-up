@@ -47,6 +47,7 @@ Future<void> main() async {
     Get.put(AuthenticationRepository());
     debugPrint("AuthenticationRepository initialized.");
 
+
     // Run the app
     runApp(const App());
     debugPrint("App launched successfully.");

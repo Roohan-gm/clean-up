@@ -53,7 +53,7 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
-    const OfferScreen(),
+    OfferScreen(),
     const EarningsPage(),
     const RatingScreen(),
     const OrderHistory()

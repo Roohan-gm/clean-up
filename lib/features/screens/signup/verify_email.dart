@@ -1,4 +1,5 @@
-import 'package:clean_up/features/screens/login/login.dart';
+import 'package:clean_up/data/repositories/authentication/authentication_repository.dart';
+import 'package:clean_up/features/controllers/signup/verify_email_controller.dart';
 import 'package:clean_up/utils/constants/sizes.dart';
 import 'package:clean_up/utils/helpers/helper_function.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,16 +9,20 @@ import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/text_strings.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
-  const VerifyEmailScreen({super.key});
+  const VerifyEmailScreen({super.key, this.email});
+
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VerifyEmailController());
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
-                onPressed: () => Get.offAll(() => const LoginScreen()),
+                onPressed: () => AuthenticationRepository.instance.logout(),
                 icon: const Icon(CupertinoIcons.clear))
           ],
         ),
@@ -45,7 +50,7 @@ class VerifyEmailScreen extends StatelessWidget {
                   height: RSizes.spaceBtwItems,
                 ),
                 Text(
-                  'rgs',
+                  email ?? '',
                   style: Theme.of(context).textTheme.labelLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -65,7 +70,7 @@ class VerifyEmailScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => controller.checkEmailVerificationStatus(),
                     child: const Text(RTexts.rContinue),
                   ),
                 ),
@@ -75,7 +80,7 @@ class VerifyEmailScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () => controller.resendEmailVerification(),
                     child: const Text(RTexts.resendEmail),
                   ),
                 ),

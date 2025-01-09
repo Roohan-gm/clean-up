@@ -25,7 +25,7 @@ class CustomBottomSheetOffer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(RImages.avatar),
+                      backgroundImage: AssetImage(RImages.user),
                       radius: 28,
                     ),
                     Text(

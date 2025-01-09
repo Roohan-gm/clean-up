@@ -1,3 +1,4 @@
+import 'package:clean_up/features/models/location_model.dart';
 import 'package:clean_up/utils/formatters/formatter.dart';
 
 class UserModel {
@@ -9,6 +10,7 @@ class UserModel {
   final String username;
   String phoneNumber;
   String profilePicture;
+  final LocationModel? currentLocation;
 
   UserModel(
       {required this.id,
@@ -17,6 +19,7 @@ class UserModel {
       required this.email,
       required this.username,
       required this.phoneNumber,
+      this.currentLocation,
       required this.profilePicture});
 
   /// Helper function to get the full name.
@@ -58,20 +61,36 @@ class UserModel {
       'username': username,
       'email': email,
       'phone_number': phoneNumber,
-      'profile_picture': profilePicture
+      'profile_picture': profilePicture,
+      'current_location': currentLocation?.toJson(),
     };
   }
 
-  /// Factory method to create a UserModel from a Supabase document snapshot.
-  // factory UserModel.fromSnapshot(Map<String, dynamic> data) {
-  //   return UserModel(
-  //     id: data['id'] ?? '',
-  //     firstName: data['first_name'] ?? '',
-  //     lastName: data['last_name'] ?? '',
-  //     email: data['email'] ?? '',
-  //     username: data['username'] ?? '',
-  //     phoneNumber: data['phone_number'] ?? '',
-  //     profilePicture: data['profile_picture'] ?? ''
-  //   );
-  // }
+  /// Factory method to create a UserModel from a Supabase.
+  factory UserModel.fromMap(Map<String, dynamic> data) {
+    return UserModel(
+      id: data['id'] ?? '',
+      firstName: data['first_name'] ?? '',
+      lastName: data['last_name'] ?? '',
+      email: data['email'] ?? '',
+      username: data['username'] ?? '',
+      phoneNumber: data['phone_number'] ?? '',
+      profilePicture: data['profile_picture'] ?? '',
+      currentLocation: data['current_location'] != null
+          ? LocationModel.fromJson(data['current_location'])
+          : null,
+    );
+  }
+
+// factory UserModel.fromSnapshot(Map<String, dynamic> data) {
+//   return UserModel(
+//     id: data['id'] ?? '',
+//     firstName: data['first_name'] ?? '',
+//     lastName: data['last_name'] ?? '',
+//     email: data['email'] ?? '',
+//     username: data['username'] ?? '',
+//     phoneNumber: data['phone_number'] ?? '',
+//     profilePicture: data['profile_picture'] ?? ''
+//   );
+// }
 }

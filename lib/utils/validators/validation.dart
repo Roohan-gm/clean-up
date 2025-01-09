@@ -4,6 +4,7 @@ class RValidator {
     if(value == null||value.isEmpty){
       return '$fieldName is required.';
     }
+    return null;
   }
   /// Email
   static String? validateEmail(String? value) {
