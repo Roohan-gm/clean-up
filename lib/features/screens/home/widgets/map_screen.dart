@@ -10,7 +10,6 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get or create the controller instance
     final mapScreenController = Get.find<MapScreenController>();
 
     return Scaffold(
@@ -28,7 +27,7 @@ class MapScreen extends StatelessWidget {
               },
             ),
             children: [
-              // Tile Layer
+              // Tile Layer (map tiles)
               TileLayer(
                 urlTemplate: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
                 subdomains: const ['a', 'b', 'c'],
@@ -90,6 +89,9 @@ class MapScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: RColors.white,
                 borderRadius: BorderRadius.all(Radius.circular(12)),
+                boxShadow: [
+                  BoxShadow(color: Colors.grey, blurRadius: 4, offset: Offset(0, 4)),
+                ],
               ),
               child: IconButton(
                 onPressed: () async {
@@ -134,21 +136,21 @@ class MapScreen extends StatelessWidget {
                   child: TextField(
                     controller: mapScreenController.searchController,
                     decoration: InputDecoration(
-                      hintText: "Search...",
+                      hintText: "Search for a location...",
                       filled: true,
                       fillColor: RColors.white,
                       hintStyle: const TextStyle(fontSize: 18, color: RColors.darkGrey),
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide(color: RColors.white),
+                        borderSide: BorderSide.none,
                       ),
                       enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide(color: RColors.white),
+                        borderSide: BorderSide.none,
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide(color: RColors.white),
+                        borderSide: BorderSide.none,
                       ),
                       prefixIcon: const Icon(CupertinoIcons.search),
                       suffixIcon: mapScreenController.isSearching.value
@@ -197,7 +199,7 @@ class MapScreen extends StatelessWidget {
             ),
           ),
 
-          // Show Current Location Button
+          // Show Current Location Button with animation
           Positioned(
             bottom: 20,
             left: 20,

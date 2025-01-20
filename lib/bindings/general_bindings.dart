@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../data/repositories/services/services_repository.dart';
 import '../data/repositories/services_cart/services_cart_repositories.dart';
 import '../features/controllers/offer/offer_controller.dart';
+import '../features/controllers/offer/widget/offer_accepted_controller.dart';
 import '../features/controllers/service_location_map/service_location_map_controller.dart';
 import '../features/controllers/services/services_controller.dart';
 import '../features/controllers/services_cart/services_cart_controller.dart';
@@ -36,5 +37,7 @@ class GeneralBindings extends Bindings {
     Get.put(OrderRepository(Supabase.instance.client));
     Get.put(OrderController(Get.find<OrderRepository>()));
     Get.put(OfferController());
+    // Get.put(AvailableCleanerController());
+    Get.put(OfferAcceptedController());
   }
 }

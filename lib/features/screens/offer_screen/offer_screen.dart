@@ -61,7 +61,7 @@ class OfferScreen extends GetView<OfferController> {
           return const SearchingOfferScreen();
         } else {
           return OfferList(
-            cleanerLatitude: controller.currentLocation.value!.latitude,
+            cleanerLatitude:  controller.currentLocation.value!.latitude,
             cleanerLongitude: controller.currentLocation.value!.longitude,
           );
         }

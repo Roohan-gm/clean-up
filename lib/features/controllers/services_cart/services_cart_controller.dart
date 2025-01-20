@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -10,6 +11,8 @@ import '../../models/service_model.dart';
 
 class ServicesCartController extends GetxController {
   // Get.put(ServicesCartRepository(supabaseClient));
+  Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
+  RxString selectedAddress = ''.obs;
   final ServicesCartRepository _repository;
   var cartItems = <ServicesCartModel>[].obs;
   var services =
@@ -17,6 +20,7 @@ class ServicesCartController extends GetxController {
   var totalAmount = 0.0.obs;
   final Uuid uuid = const Uuid(); // Unique ID generator
   final cartId = ''.obs;
+  var specialNote = ''.obs;
 
   ServicesCartController(this._repository);
 

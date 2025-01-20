@@ -1,7 +1,6 @@
 import 'package:clean_up/features/controllers/order/order_controller.dart';
 import 'package:clean_up/features/models/order_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -14,23 +13,24 @@ import '../../../models/location_model.dart';
 class ServiceCompletionEssential extends StatelessWidget {
   final ServicesCartController servicesCartController;
 
-  const ServiceCompletionEssential({
+  ServiceCompletionEssential({
     super.key,
     required this.servicesCartController,
   });
 
+  late final TextEditingController specialNoteController =
+      TextEditingController(
+    text: servicesCartController
+        .specialNote.value, // Initialize with the stored value
+  );
+
+  bool isFormValid() {
+    return servicesCartController.selectedLocation.value != null &&
+        servicesCartController.specialNote.value.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final specialNoteController = TextEditingController();
-    final Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
-    final RxString selectedAddress = ''.obs;
-    // final RxDouble totalPrice = 0.0.obs;
-
-    // Calculate total price when the widget is built
-    // servicesCartController.calculateTotalAmount().then((value) {
-    //   totalPrice.value = value;
-    // });
-
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       padding: const EdgeInsets.all(15),
@@ -51,18 +51,20 @@ class ServiceCompletionEssential extends StatelessWidget {
             onPressed: () async {
               final result = await Get.to(() => const MapScreen());
               if (result != null && result is Map<String, dynamic>) {
-                selectedLocation.value = LatLng(
+                servicesCartController.selectedLocation.value = LatLng(
                   result['latitude'],
                   result['longitude'],
                 );
-                selectedAddress.value = result['address'];
+                servicesCartController.selectedAddress.value =
+                    result['address'];
 
-                // Update the cart item's location directly
                 for (var cartItem in servicesCartController.cartItems) {
                   cartItem.servicesLocation = LocationModel(
-                    address: selectedAddress.value,
-                    latitude: selectedLocation.value!.latitude,
-                    longitude: selectedLocation.value!.longitude,
+                    address: servicesCartController.selectedAddress.value,
+                    latitude:
+                        servicesCartController.selectedLocation.value!.latitude,
+                    longitude: servicesCartController
+                        .selectedLocation.value!.longitude,
                   );
                 }
                 servicesCartController.cartItems.refresh();
@@ -95,11 +97,11 @@ class ServiceCompletionEssential extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Obx(() {
-            return selectedAddress.value.isNotEmpty
+            return servicesCartController.selectedAddress.value.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Text(
-                      'Selected Location: ${selectedAddress.value}',
+                      'Selected Location: ${servicesCartController.selectedAddress.value}',
                       style: const TextStyle(
                         color: RColors.darkGrey,
                         fontSize: 16,
@@ -121,11 +123,7 @@ class ServiceCompletionEssential extends StatelessWidget {
               labelStyle: TextStyle(color: RColors.darkGrey),
             ),
             onChanged: (note) {
-              if (kDebugMode) {
-                print(
-                    'Updating note: $note for cart ID: ${servicesCartController.cartId.value}');
-              }
-              servicesCartController.updateCartItemSpecialNote(note);
+              servicesCartController.specialNote.value = note;
             },
           ),
           const SizedBox(height: 10),
@@ -161,17 +159,33 @@ class ServiceCompletionEssential extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () async {
-                final newOrder = OrderModel(
-                    status: 'pending',
-                    cartItems: servicesCartController.cartItems);
-
-                if (kDebugMode) {
-                  print(
-                      'Serialized cart_items: ${newOrder.toJson()['cart_items']}');
+                if (!isFormValid()) {
+                  Get.snackbar(
+                    'Missing Details',
+                    'Please provide both location and note to proceed.',
+                    backgroundColor: RColors.primary,
+                    colorText: Colors.white,
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 3),
+                  );
+                  return;
                 }
+
+                final newOrder = OrderModel(
+                  status: 'pending',
+                  cartItems: servicesCartController.cartItems,
+                );
+
                 final orderId =
                     await Get.find<OrderController>().addOrder(newOrder);
-                servicesCartController.clearCart();
+
+                // Clear the cart and related details
+                servicesCartController.cartItems.clear();
+                servicesCartController.specialNote.value = '';
+                servicesCartController.selectedLocation.value = null;
+                servicesCartController.selectedAddress.value = '';
+                servicesCartController.totalAmount.value = 0.0; // Reset total amount
+
                 Get.to(() => AvailableCleaner(orderId: orderId));
               },
               style: ElevatedButton.styleFrom(

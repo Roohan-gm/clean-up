@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../models/location_model.dart';
 import '../../../models/order_details_model.dart';
 import '../../../models/order_model.dart';
 
@@ -36,7 +37,6 @@ Future<List<OrderDetails>> fetchNearbyOrderDetails(
       print("RPC call completed. Response: $response");
     }
 
-    // Check if the response is null or not a list
     if (response == null) {
       if (kDebugMode) {
         print("RPC response is null.");
@@ -44,13 +44,12 @@ Future<List<OrderDetails>> fetchNearbyOrderDetails(
       throw Exception('RPC response is null');
     }
 
-    // Safely handle the response
     if (response is List<dynamic>) {
       if (response.isEmpty) {
         if (kDebugMode) {
           print("No nearby orders found.");
         }
-        return []; // Return an empty list if no results
+        return [];
       }
 
       if (kDebugMode) {
@@ -60,11 +59,18 @@ Future<List<OrderDetails>> fetchNearbyOrderDetails(
 
       return orders.map((orderJson) {
         final order = OrderModel.fromJson(orderJson);
+        final serviceLocationJson = orderJson['location'] as Map<String, dynamic>?;
+        final serviceLocation = serviceLocationJson != null
+            ? LocationModel.fromJson(serviceLocationJson)
+            : LocationModel(latitude: 0.0, longitude: 0.0, address: 'N/A'); // Provide default location
+
         return OrderDetails.fromOrderModel(
           order,
           orderJson['customer_name'] ?? 'Unknown Customer',
           orderJson['customer_profile_pic'] ?? '',
-          orderJson['distance_km'] ?? 0.0, // Include distance
+          (orderJson['distance_km'] ?? 0).toDouble(),
+          orderJson['customer_phone'] ?? 'Unknown Phone',
+          serviceLocation,
         );
       }).toList();
     } else {
