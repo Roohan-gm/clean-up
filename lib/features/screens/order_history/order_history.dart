@@ -34,7 +34,7 @@ class OrderHistory extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage(RImages.avatar),
+                        backgroundImage: AssetImage(RImages.user),
                         radius: 18,
                       ),
                       Text(

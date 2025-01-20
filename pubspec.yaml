@@ -58,6 +58,12 @@ dependencies:
   lottie: ^3.1.3
   connectivity_plus: ^5.0.2
   awesome_snackbar_content: ^0.1.4
+  shimmer: ^3.0.0
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+  uuid: ^4.5.1
+  google_maps_flutter: ^2.10.0
+  geocoding: ^3.0.0
 
 
 
@@ -83,7 +89,7 @@ flutter:
     - assets/images/on_boarding_images/onBoarding3.png
     - assets/images/animations/verify.webp
     - assets/images/animations/success.webp
-    - assets/images/avatar/img.png
+    - assets/images/avatar/defaultUser.png
     - assets/images/services/1.png
     - assets/images/services/2.png
     - assets/images/services/3.png
@@ -92,6 +98,8 @@ flutter:
     - assets/images/avatar/avatar.png
     - assets/images/animations/LottieAnimation.json
     - .env
+    - assets/images/animations/success.json
+    - assets/service_account/service_account.json
 
   # fonts:
   #   - family: Schyler

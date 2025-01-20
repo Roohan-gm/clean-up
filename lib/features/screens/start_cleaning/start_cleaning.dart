@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:clean_up/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
-import '../accepted_cleaner/widgets/cleaner_info_contact_contact.dart';
-import '../accepted_cleaner/widgets/service_cost_card.dart';
 
 class StartCleaning extends StatefulWidget {
   const StartCleaning({super.key});
@@ -46,9 +44,9 @@ class _StartCleaningState extends State<StartCleaning> {
             const Spacer(),
             const Column(
               children: [
-                ServiceCostCard(),
-                SizedBox(height: 10),
-                CleanerInfoContactCard(),
+                // ServiceCostCard(),
+                // SizedBox(height: 10),
+                // CleanerInfoContactCard(),
                 SizedBox(height: 20),
               ],
             )

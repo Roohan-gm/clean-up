@@ -19,7 +19,7 @@ class RImages{
 
 
   // profile pic
-  static const String avatar = 'assets/images/avatar/img.png';
+  static const String user = 'assets/images/avatar/defaultUser.png';
   static const String registerAvatar = 'assets/images/avatar/avatar.png';
 
 
@@ -30,6 +30,7 @@ class RImages{
 
   // Docer Animation
   static const String lottieAnimation = 'assets/images/animations/LottieAnimation.json';
+  static const String successAnimation = 'assets/images/animations/success.json';
 
 
 

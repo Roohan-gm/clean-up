@@ -5,6 +5,7 @@ class RColors {
 
   // App Basic Colors
   static const Color primary = Color(0xFF0094FF);
+  static const Color lightPrimary = Color(0xFF0094FF);
   static const Color secondary = Color(0xFF9D9D9D);
   static const Color accent = Color(0xFFFFFFFF);
 

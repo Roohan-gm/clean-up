@@ -1,3 +1,4 @@
+import 'package:clean_up/features/controllers/forget_password/forget_password_controller.dart';
 import 'package:clean_up/features/screens/login/login.dart';
 import 'package:clean_up/utils/constants/sizes.dart';
 import 'package:clean_up/utils/constants/text_strings.dart';
@@ -7,9 +8,10 @@ import 'package:get/get.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/helper_function.dart';
 
-class ResetPassword extends StatelessWidget {
-  const ResetPassword({super.key});
+class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({super.key, required this.email});
 
+  final String email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +59,7 @@ class ResetPassword extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () =>Get.off(() => const LoginScreen()),
+                  onPressed: () =>Get.offAll(() => const LoginScreen()),
                   child: const Text(RTexts.done),
                 ),
               ),
@@ -69,7 +71,7 @@ class ResetPassword extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: (){},
+                  onPressed: () =>ForgetPasswordController.instance.resendPasswordResetEmail(email),
                   child: const Text(RTexts.resendEmail),
                 ),
               ),

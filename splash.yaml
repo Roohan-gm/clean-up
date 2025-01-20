@@ -1,15 +1,15 @@
 flutter_native_splash:
   color: "#FFFFFF"
   color_dark: "#272727"
-  background_image: assets/logo/PNG 1.png
-  background_image_dark_android: assets/logo/PNG 2.png
-
+  image: assets/logo/PNG_1.png  # Ensure the filename is correct
+  background_image_dark_android: assets/logo/PNG_2.png  # Ensure the filename is correct
 
   android_12:
     color: "#FFFFFF"
     color_dark: "#272727"
-    background_image: assets/logo/PNG 1.png
-    background_image_dark_android: assets/logo/PNG 2.png
+    image: assets/logo/PNG_1.png  # Ensure the filename is correct
+    background_image_dark_android: assets/logo/PNG_2.png  # Ensure the filename is correct
 
   web: false
   android: true
+  image_mode: contain  # Try using 'contain' instead of 'stretch'

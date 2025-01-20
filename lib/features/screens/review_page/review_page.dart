@@ -38,7 +38,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 ),
                 const SizedBox(height: 20),
                 const CircleAvatar(
-                  backgroundImage: AssetImage(RImages.avatar),
+                  backgroundImage: AssetImage(RImages.user),
                   radius: 50,
                 ),
                 const SizedBox(height: 10),

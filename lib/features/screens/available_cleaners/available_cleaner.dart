@@ -1,197 +1,219 @@
-import 'package:clean_up/features/screens/accepted_cleaner/accepted_cleaner.dart';
 import 'package:clean_up/utils/constants/colors.dart';
 import 'package:clean_up/utils/constants/image_strings.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/available_cleaner/available_cleaner_controller.dart';
+
 class AvailableCleaner extends StatelessWidget {
-  const AvailableCleaner({super.key});
+  final String? orderId;
+
+  const AvailableCleaner({super.key, required this.orderId});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put<AvailableCleanerController>(
+        AvailableCleanerController(orderId!));
+
+    // Screen size for responsive design
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Text(
-                "Available Cleaners",
-                style: Theme.of(context).textTheme.headlineLarge
-                // TextStyle(
-                //   fontSize: 40,
-                //   fontWeight: FontWeight.bold,
-                //   color: RColors.black,
-                // ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ListView.builder(
-                  itemCount: 3, // Replace with your actual item count.
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      color: RColors.white,
-                      elevation: 5,
-                      child: ListTile(
-                        leading: const CircleAvatar(
-                          backgroundImage: AssetImage(RImages.avatar),
-                          maxRadius: 29,
-                        ),
-                        title: Text("Cleaner ${index + 1}"),
-                        subtitle: const Row(
-                          children: [
-                            Icon(
-                              CupertinoIcons.star_fill,
-                              color: RColors.primary,
-                              size: 15,
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              "4.2",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: RColors.black,
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: const Text("Available Cleaners",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.grey[200],
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: RColors.primary,
+                  ),
+                );
+              }
+
+              if (controller.cleaners.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "No cleaners have made offers yet.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: RColors.grey,
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: controller.cleaners.length,
+                itemBuilder: (context, index) {
+                  final offer = controller.cleaners[index];
+                  final cleaner = offer['cleaner'];
+
+                  return Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: const EdgeInsets.only(bottom: 15),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Profile Picture
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  cleaner['profile_picture'] ?? RImages.user,
+                                ),
+                                radius: screenWidth * 0.08,
                               ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "(2,342)",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: RColors.darkGrey,
+                              const SizedBox(width: 15),
+                              // Cleaner Info
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cleaner['username'] ?? "Unknown Cleaner",
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.045,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                          size: 16,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          cleaner['avg_rating']
+                                                  ?.toStringAsFixed(1) ??
+                                              "0.0",
+                                          style: TextStyle(
+                                            fontSize: screenWidth * 0.04,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "\$200",
+                              // Offer Amount
+                              Text(
+                                "Rs. ${offer['offer_amount']}",
+                                style: TextStyle(
+                                  fontSize: screenWidth * 0.05,
+                                  fontWeight: FontWeight.bold,
+                                  color: RColors.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          // Action Buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              OutlinedButton(
+                                onPressed: () =>
+                                    controller.rejectCleaner(offer['id']),
+                                style: OutlinedButton.styleFrom(
+                                  side:
+                                      const BorderSide(color: RColors.primary),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 10),
+                                ),
+                                child: const Text(
+                                  "Decline",
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    color: RColors.primary,
                                     fontWeight: FontWeight.bold,
-                                    color: RColors.black,
                                   ),
                                 ),
-                                Text(
-                                  "5 min",
+                              ),
+                              ElevatedButton(
+                                onPressed: () =>
+                                    controller.acceptCleaner(offer),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: RColors.primary,
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 10),
+                                ),
+                                child: const Text(
+                                  "Accept",
                                   style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: RColors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(
-                                  "2 km",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: RColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 23,
-                                  child: ElevatedButton(
-                                    onPressed: () => Get.off(()=> const AcceptedCleaner()),
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: RColors.white,
-                                      textStyle: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      backgroundColor: RColors.primary,
-                                      padding: EdgeInsets.zero,
-                                      alignment: Alignment.center,
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      "Accept",
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                SizedBox(
-                                  height: 23,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: RColors.white,
-                                      backgroundColor: RColors.secondary,
-                                      padding: EdgeInsets.zero,
-                                      textStyle: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      alignment: Alignment.center,
-                                      elevation: 5,
-                                      side:
-                                          const BorderSide(color: RColors.secondary),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      "Decline",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                    ),
+                  );
+                },
+              );
+            }),
+          ),
+          // Cancel Order Button
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
+                onPressed: () => controller.cancelOrder(orderId!),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: RColors.white,
                   backgroundColor: RColors.secondary,
-                  alignment: Alignment.center,
-                  side: const BorderSide(color: RColors.secondary),
-                  elevation: 5,
+                  foregroundColor: Colors.white,
+                  elevation: 3,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  side: BorderSide.none
                 ),
-                onPressed: () => Get.back(),
                 child: const Text(
                   "Cancel Order",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

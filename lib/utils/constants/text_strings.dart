@@ -85,7 +85,7 @@ class RTexts{
   static const String bathroomSubtitle  = "Sparkling clean bathroom.";
   static const String kitchenSubtitle  = "Pristine and spotless kitchen.";
   static const String amount  = "\$22";
-  static const String checkout  = "Checkout";
+  static const String cart  = "Cart";
 
 
 

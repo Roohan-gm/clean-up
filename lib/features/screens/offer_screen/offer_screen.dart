@@ -1,78 +1,78 @@
-import 'package:clean_up/app_controller.dart';
+import 'package:clean_up/features/screens/home/home.dart';
 import 'package:clean_up/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../utils/constants/image_strings.dart';
-import '../login/login.dart';
+import '../../../utils/images/circular_image.dart';
+import '../../../utils/popups/loaders.dart';
+import '../../../utils/popups/shimmer.dart';
+import '../../controllers/offer/offer_controller.dart';
+import '../../controllers/offer/widget/offer_list.dart';
+import '../../controllers/offer/widget/searching_offer_screen.dart';
+import '../../controllers/user/user_controller.dart';
+import '../../controllers/user_role/user_role_controller.dart';
 import '../offline_screen/offline_screen.dart';
-import '../online_screen/online_screen.dart';
 
-class OfferScreen extends StatefulWidget {
-  const OfferScreen({super.key});
+class OfferScreen extends GetView<OfferController> {
+  OfferScreen({super.key});
 
-  @override
-  State<OfferScreen> createState() => _OfferScreenState();
-}
-
-class _OfferScreenState extends State<OfferScreen> {
-  bool isOnline = true;
+  // Create a GlobalKey for the Scaffold state
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const CustomNavigationDrawer(),
       appBar: AppBar(
-        leading: Builder(builder: (context) {
-          return IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: const Icon(
-                Iconsax.element_plus,
-                size: 36,
-                color: RColors.primary,
-              ));
-        }),
-        title: Switch(
-          value: isOnline,
-          onChanged: (value) {
-            setState(() {
-              isOnline = value;
-            });
-          },
-          activeColor: RColors.primary,
-          trackOutlineColor: const WidgetStatePropertyAll(RColors.white),
-          thumbColor: const WidgetStatePropertyAll(RColors.white),
-          inactiveTrackColor: RColors.secondary,
+        leading: IconButton(
+          icon: Icon(Iconsax.element_plus, color: Theme.of(context).primaryColor),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
+        title: Obx(() => Switch(
+              value: controller.isOnline.value,
+              onChanged: (_) => controller.toggleOnlineStatus(),
+              activeColor: RColors.primary,
+              trackOutlineColor: const WidgetStatePropertyAll(RColors.white),
+              thumbColor: const WidgetStatePropertyAll(RColors.white),
+              inactiveTrackColor: RColors.secondary,
+            )),
         centerTitle: true,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-                height: 36,
-                width: 36,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  image: const DecorationImage(
-                      image: AssetImage(RImages.avatar), fit: BoxFit.cover),
-                )),
-          )
+            padding: EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(RImages.user),
+              radius: 20,
+            ),
+          ),
         ],
       ),
-      drawer: const CustomNavigationDrawer(),
-      body: isOnline ? const OnlineScreen() : const OfflineScreen(),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const SearchingOfferScreen();
+        }
+        if (!controller.isOnline.value) {
+          return const OfflineScreen();
+        } else if (!controller.hasOffers.value) {
+          return const SearchingOfferScreen();
+        } else {
+          return OfferList(
+            cleanerLatitude:  controller.currentLocation.value!.latitude,
+            cleanerLongitude: controller.currentLocation.value!.longitude,
+          );
+        }
+      }),
     );
   }
 }
 
-class CustomNavigationDrawer extends StatefulWidget {
+class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({super.key});
 
-  @override
-  State<CustomNavigationDrawer> createState() => _CustomNavigationDrawerState();
-}
-
-class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -87,28 +87,66 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
   }
 
   buildHeader(BuildContext context) {
+    final UserController controller = Get.find<UserController>();
     return Material(
       color: RColors.primary,
       child: Container(
         padding: EdgeInsets.only(
-            top: MediaQuery.of(context).padding.top, bottom: 24),
-        child: const Column(
+            top: MediaQuery.of(context).padding.top, bottom: 20),
+        child: Column(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(RImages.avatar),
-              radius: 52,
+            Obx(() {
+              final networkImage = controller.user.value.profilePicture;
+              final image =
+                  networkImage.isNotEmpty ? networkImage : RImages.user;
+
+              return controller.imageUploading.value
+                  ? const RShimmerEffect(
+                      width: 80,
+                      height: 80,
+                      radius: 80,
+                    )
+                  : RCircularImage(
+                      image: image,
+                      isNetworkImage: networkImage.isNotEmpty,
+                      width: 80,
+                      height: 80,
+                    );
+            }),
+            const SizedBox(
+              height: 6,
             ),
-            SizedBox(
+            TextButton(
+                onPressed: () => controller.uploadUserProfilePicture(),
+                child: const Text(
+                  'Add Profile',
+                  style: TextStyle(color: RColors.white),
+                )),
+            const SizedBox(
               height: 12,
             ),
-            Text(
-              "Jamal",
-              style: TextStyle(fontSize: 28, color: RColors.white),
-            ),
-            Text(
-              "l1f19bsse0004@gmail.com",
-              style: TextStyle(fontSize: 16, color: RColors.white),
-            )
+            Obx(() {
+              if (controller.profileLoading.value) {
+                // Display a Shimmer loader while user profile is being loaded
+                return const RShimmerEffect(width: 80, height: 15);
+              } else {
+                return Text(
+                  controller.user.value.fullName,
+                  style: const TextStyle(fontSize: 28, color: RColors.white),
+                );
+              }
+            }),
+            Obx(() {
+              if (controller.profileLoading.value) {
+                // Display a Shimmer loader while user profile is being loaded
+                return const RShimmerEffect(width: 80, height: 15);
+              } else {
+                return Text(
+                  controller.user.value.email,
+                  style: const TextStyle(fontSize: 16, color: RColors.white),
+                );
+              }
+            }),
           ],
         ),
       ),
@@ -116,6 +154,7 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
   }
 
   buildMenuItems(BuildContext context) {
+    final UserRoleController userRoleController = Get.put(UserRoleController());
     return Container(
       padding: const EdgeInsets.all(24),
       child: Wrap(
@@ -136,20 +175,24 @@ class _CustomNavigationDrawerState extends State<CustomNavigationDrawer> {
           ),
           ListTile(
             leading: const Icon(Icons.switch_account_rounded),
-            title: const Text("User Mode"),
-            onTap: (){
-              final appController = Get.find<AppController>();
-              appController.switchMode('user');
+            title: const Text("Customer Mode"),
+            onTap: () async {
+              String newRole = userRoleController.role.value == 'cleaner'
+                  ? 'customer'
+                  : 'cleaner';
+              try {
+                await userRoleController.switchRole(newRole);
+                Get.offAll(() => const HomeScreen());
+              } catch (e) {
+                RLoadersSnackBar.errorSnackBar(
+                    title: "Error", message: 'Failed to switch role: $e');
+              }
             },
           ),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text("Log out"),
-            onTap: () async {
-              // await supabase.auth.signOut();
-              if(!mounted) return;
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
-            },
+            onTap: () => AuthenticationRepository.instance.logout(),
           ),
         ],
       ),

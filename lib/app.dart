@@ -17,14 +17,6 @@ class App extends StatelessWidget {
       theme: RAppTheme.lightTheme,
       darkTheme: RAppTheme.darkTheme,
       initialBinding: GeneralBindings(),
-      // getPages: [
-      //   GetPage(name: '/onboarding', page: () => const OnBoardingScreen()),
-      //   GetPage(name: '/login', page: () => const LoginScreen()),
-      //   GetPage(name: '/home', page: () => const HomeScreen()),
-      //   GetPage(name: '/registration', page: () => const RegisterScreen()),
-      //   GetPage(name: '/navigationMenu', page: () => const NavigationMenu()),
-      // ],
-      // home: const NavigationMenu(),
       home: const Scaffold(backgroundColor: RColors.primary,body: Center(child: CircularProgressIndicator(color: RColors.white,),),),
     );
   }
