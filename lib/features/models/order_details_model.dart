@@ -6,6 +6,7 @@ import 'order_model.dart';
 class OrderDetails {
   final String? id;
   final String customerName;
+  final String customerId;
   final String customerProfilePic;
   final String address;
   final double totalPrice;
@@ -17,6 +18,7 @@ class OrderDetails {
   OrderDetails({
     required this.id,
     required this.customerName,
+    required this.customerId,
     required this.customerProfilePic,
     required this.address,
     required this.totalPrice,
@@ -33,6 +35,7 @@ class OrderDetails {
       double distance,
       String customerPhone,
       LocationModel serviceLocation,
+     {required customerId}
       ) {
     final address = order.cartItems.isNotEmpty
         ? order.cartItems[0].servicesLocation?.address ?? "N/A"
@@ -47,6 +50,7 @@ class OrderDetails {
     return OrderDetails(
       id: order.id,
       customerName: customerName,
+      customerId: customerId,
       customerProfilePic: customerProfilePic,
       address: address,
       totalPrice: totalPrice,

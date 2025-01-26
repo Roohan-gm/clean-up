@@ -73,6 +73,7 @@ class AvailableCleanerController extends GetxController {
       box.write('cleanerDetails', offer['cleaner']);
       box.write('offerDetails', offer);
 
+
       // Update the offer and order statuses
       await _db.from('offer').update({'status': 'accepted'}).eq('id', offer['id']);
       await _db.from('order').update({'status': 'in_progress'}).eq('id', offer['order_id']);

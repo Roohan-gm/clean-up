@@ -102,7 +102,7 @@ class AvailableCleaner extends StatelessWidget {
                                       children: [
                                         const Icon(
                                           Icons.star,
-                                          color: Colors.amber,
+                                          color: RColors.primary,
                                           size: 16,
                                         ),
                                         const SizedBox(width: 5),
