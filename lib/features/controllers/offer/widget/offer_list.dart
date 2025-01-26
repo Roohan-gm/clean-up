@@ -277,6 +277,7 @@ class OfferList extends StatelessWidget {
                   'distance': order.distance,
                   'offerAmount': offerAmount,
                   'orderId': order.id!,
+                  'customer_id': order.customerId
                 };
 
                 // Store the Map in GetStorage

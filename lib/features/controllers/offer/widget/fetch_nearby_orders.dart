@@ -34,6 +34,10 @@ Future<List<OrderDetails>> fetchNearbyOrderDetails(
     });
 
     if (kDebugMode) {
+      print("Raw response from RPC: $response");
+    }
+
+    if (kDebugMode) {
       print("RPC call completed. Response: $response");
     }
 
@@ -71,6 +75,7 @@ Future<List<OrderDetails>> fetchNearbyOrderDetails(
           (orderJson['distance_km'] ?? 0).toDouble(),
           orderJson['customer_phone'] ?? 'Unknown Phone',
           serviceLocation,
+          customerId: orderJson['customer_id'],
         );
       }).toList();
     } else {

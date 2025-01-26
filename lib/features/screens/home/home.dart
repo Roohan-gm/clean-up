@@ -37,135 +37,133 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawer: const CustomHomeNavigationDrawer(),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // AppBar
-              Builder(
-                builder: (context) => RAppbar(
-                  leadingIcon: Iconsax.element_plus,
-                  leadingOnPressed: () => Scaffold.of(context).openDrawer(),
-                  actions: [
-                    Obx(() {
-                      final networkImage =
-                          userController.user.value.profilePicture;
-                      final image =
-                      networkImage.isNotEmpty ? networkImage : RImages.user;
+        child: Column(
+          children: [
+            // AppBar
+            Builder(
+              builder: (context) => RAppbar(
+                leadingIcon: Iconsax.element_plus,
+                leadingOnPressed: () => Scaffold.of(context).openDrawer(),
+                actions: [
+                  Obx(() {
+                    final networkImage =
+                        userController.user.value.profilePicture;
+                    final image =
+                    networkImage.isNotEmpty ? networkImage : RImages.user;
 
-                      return userController.imageUploading.value
-                          ? const RShimmerEffect(
-                        width: 50,
-                        height: 50,
-                        radius: 50,
-                      )
-                          : RCircularImage(
-                        image: image,
-                        isNetworkImage: networkImage.isNotEmpty,
-                        width: 50,
-                        height: 50,
+                    return userController.imageUploading.value
+                        ? const RShimmerEffect(
+                      width: 50,
+                      height: 50,
+                      radius: 50,
+                    )
+                        : RCircularImage(
+                      image: image,
+                      isNetworkImage: networkImage.isNotEmpty,
+                      width: 50,
+                      height: 50,
+                    );
+                  }),
+                ],
+                title: Center(
+                  child: Obx(() {
+                    if (userController.profileLoading.value) {
+                      return const RShimmerEffect(width: 80, height: 15);
+                    } else {
+                      return Text(
+                        userController.user.value.fullName,
+                        style: const TextStyle(
+                            fontSize: 28, color: RColors.white),
                       );
-                    }),
-                  ],
-                  title: Center(
-                    child: Obx(() {
-                      if (userController.profileLoading.value) {
-                        return const RShimmerEffect(width: 80, height: 15);
-                      } else {
-                        return Text(
-                          userController.user.value.fullName,
-                          style: const TextStyle(
-                              fontSize: 28, color: RColors.white),
-                        );
-                      }
-                    }),
-                  ),
+                    }
+                  }),
                 ),
               ),
-              // Home Title
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: RSizes.defaultSpacing, vertical: 10),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      RTexts.homeTitle,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                      textAlign: TextAlign.start,
-                    )),
-              ),
-              // Services Grid
-              Obx(() {
-                if (serviceController.services.isEmpty) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: RColors.primary,
-                    ),
-                  );
-                }
-                return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
-                    childAspectRatio: (MediaQuery.of(context).size.width * 0.4) /
-                        (MediaQuery.of(context).size.height * 0.29),
+            ),
+            // Home Title
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: RSizes.defaultSpacing, vertical: 10),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    RTexts.homeTitle,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                    textAlign: TextAlign.start,
+                  )),
+            ),
+            // Services Grid
+            Obx(() {
+              if (serviceController.services.isEmpty) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: RColors.primary,
                   ),
-                  itemCount: serviceController.services.length,
-                  itemBuilder: (context, index) {
-                    final service = serviceController.services[index];
-                    return ServiceCard(service: service);
-                  },
                 );
-              }),
-              // Cart Button
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    showSlidingBottomSheet(context, builder: (context) {
-                      return SlidingSheetDialog(
-                        elevation: 8,
-                        cornerRadius: 16,
-                        snapSpec: const SnapSpec(
-                            snap: true,
-                            snappings: [0.8],
-                            positioning: SnapPositioning.relativeToAvailableSpace),
-                        builder: (context, state) {
-                          return BottomServiceSheet(
-                            servicesCartController: servicesCartController,
-                          );
-                        },
-                      );
-                    });
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: const WidgetStatePropertyAll(RColors.primary),
-                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                    padding: const WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        RTexts.cart,
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: RColors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Icon(
-                        CupertinoIcons.shopping_cart,
-                        color: RColors.white,
-                        size: 35,
-                      )
-                    ],
-                  ),
+              }
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
+                  childAspectRatio: (MediaQuery.of(context).size.width * 0.4) /
+                      (MediaQuery.of(context).size.height * 0.29),
+                ),
+                itemCount: serviceController.services.length,
+                itemBuilder: (context, index) {
+                  final service = serviceController.services[index];
+                  return ServiceCard(service: service);
+                },
+              );
+            }),
+            // Cart Button
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  showSlidingBottomSheet(context, builder: (context) {
+                    return SlidingSheetDialog(
+                      elevation: 8,
+                      cornerRadius: 16,
+                      snapSpec: const SnapSpec(
+                          snap: true,
+                          snappings: [0.8],
+                          positioning: SnapPositioning.relativeToAvailableSpace),
+                      builder: (context, state) {
+                        return BottomServiceSheet(
+                          servicesCartController: servicesCartController,
+                        );
+                      },
+                    );
+                  });
+                },
+                style: ButtonStyle(
+                  backgroundColor: const WidgetStatePropertyAll(RColors.primary),
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+                  padding: const WidgetStatePropertyAll(
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      RTexts.cart,
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: RColors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Icon(
+                      CupertinoIcons.shopping_cart,
+                      color: RColors.white,
+                      size: 35,
+                    )
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -184,7 +182,7 @@ class ServiceCard extends StatelessWidget {
     return Container(
       // Remove fixed height to let content decide the height
       width: MediaQuery.of(context).size.width * 0.4,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8), // Reduced padding
+      padding: const EdgeInsets.symmetric(horizontal: 8), // Reduced padding
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: RColors.lightGrey,
