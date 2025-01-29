@@ -1,73 +1,126 @@
-import 'package:clean_up/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../utils/constants/colors.dart';
+import '../../controllers/order_history/order_history_controller.dart';
 
 class OrderHistory extends StatelessWidget {
   const OrderHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final OrderHistoryController controller = Get.put(OrderHistoryController());
+
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text(
-            "Order History",
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text(
+          "Offer History",
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
-        body: ListView.builder(
-          padding: const EdgeInsets.all(16.0),
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 3),
-              elevation: 4,
-              child: ListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  subtitleTextStyle: const TextStyle(color: RColors.secondary),
-                  tileColor: RColors.white,
-                  leading: const Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: AssetImage(RImages.user),
-                        radius: 18,
-                      ),
-                      Text(
-                        "Jamal",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                  title: const Text("703 Windfall Rd. Park Ridge, IL 60068"),
-                  subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        centerTitle: true,
+      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator(color: RColors.primary,));
+        }
+
+        if (controller.offers.isEmpty) {
+          return const Center(
+            child: Text(
+              "No offers available.",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          );
+        }
+
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: controller.offers.length,
+              itemBuilder: (context, index) {
+                final offer = controller.offers[index];
+
+                // Format the created_at date
+                final createdAt = offer['created_at'] != null
+                    ? DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(offer['created_at']))
+                    : 'Unknown';
+
+                // Determine the color for the status text
+                Color statusColor;
+                switch (offer['status']) {
+                  case 'accepted':
+                    statusColor = RColors.primary;
+                    break;
+                  case 'rejected':
+                    statusColor = Colors.red;
+                    break;
+                  default:
+                    statusColor = Colors.grey;
+                }
+
+                return Card(
+                  margin: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
+                  elevation: 4,
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                    ),
+                    subtitleTextStyle: const TextStyle(color: RColors.secondary),
+                    tileColor: RColors.white,
+                    leading: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "\$20",
+                          createdAt.split(' – ')[0], // Date
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14),
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.04,
+                          ),
                         ),
                         Text(
-                          "1 km",
-                          style: TextStyle(fontSize: 14),
+                          createdAt.split(' – ')[1], // Time
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.04,
+                          ),
                         ),
-                        Text(
-                          "5 min",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          "2 beds, 1 bath",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ])),
+                      ],
+                    ),
+                    title: Text(
+                      "RS.${offer['offer_amount'] ?? 0}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: screenWidth * 0.04,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "${offer['arrival_time'] ?? '0'} min",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    trailing: Text(
+                      "${offer['status']?.toUpperCase() ?? 'PENDING'}",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.w900,
+                        color: statusColor,
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           },
-        ));
+        );
+      }),
+    );
   }
 }

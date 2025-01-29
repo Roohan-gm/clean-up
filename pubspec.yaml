@@ -64,6 +64,7 @@ dependencies:
   uuid: ^4.5.1
   google_maps_flutter: ^2.10.0
   geocoding: ^3.0.0
+  googleapis_auth: ^1.6.0
 
 
 
@@ -100,6 +101,7 @@ flutter:
     - .env
     - assets/images/animations/success.json
     - assets/service_account/service_account.json
+    - assets/clean-up-39d88-f075a7156ffb.json
 
   # fonts:
   #   - family: Schyler
