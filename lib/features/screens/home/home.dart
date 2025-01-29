@@ -20,6 +20,7 @@ import '../../../navigation_menu.dart';
 import '../../controllers/services/services_controller.dart';
 import '../../controllers/services_cart/services_cart_controller.dart';
 import '../../models/service_model.dart';
+import '../chat_bot_screen/chat_bot_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,7 +32,7 @@ class HomeScreen extends StatelessWidget {
     final UserController userController = Get.find<UserController>();
 
     Get.lazyPut(
-            () => ServicesCartController(Get.find<ServicesCartRepository>()),
+        () => ServicesCartController(Get.find<ServicesCartRepository>()),
         fenix: true);
 
     return Scaffold(
@@ -49,20 +50,20 @@ class HomeScreen extends StatelessWidget {
                     final networkImage =
                         userController.user.value.profilePicture;
                     final image =
-                    networkImage.isNotEmpty ? networkImage : RImages.user;
+                        networkImage.isNotEmpty ? networkImage : RImages.user;
 
                     return userController.imageUploading.value
                         ? const RShimmerEffect(
-                      width: 50,
-                      height: 50,
-                      radius: 50,
-                    )
+                            width: 50,
+                            height: 50,
+                            radius: 50,
+                          )
                         : RCircularImage(
-                      image: image,
-                      isNetworkImage: networkImage.isNotEmpty,
-                      width: 50,
-                      height: 50,
-                    );
+                            image: image,
+                            isNetworkImage: networkImage.isNotEmpty,
+                            width: 50,
+                            height: 50,
+                          );
                   }),
                 ],
                 title: Center(
@@ -72,8 +73,8 @@ class HomeScreen extends StatelessWidget {
                     } else {
                       return Text(
                         userController.user.value.fullName,
-                        style: const TextStyle(
-                            fontSize: 28, color: RColors.white),
+                        style:
+                            const TextStyle(fontSize: 28, color: RColors.white),
                       );
                     }
                   }),
@@ -105,7 +106,8 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const AlwaysScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
+                  crossAxisCount:
+                      MediaQuery.of(context).size.width > 600 ? 3 : 2,
                   childAspectRatio: (MediaQuery.of(context).size.width * 0.4) /
                       (MediaQuery.of(context).size.height * 0.29),
                 ),
@@ -128,7 +130,8 @@ class HomeScreen extends StatelessWidget {
                       snapSpec: const SnapSpec(
                           snap: true,
                           snappings: [0.8],
-                          positioning: SnapPositioning.relativeToAvailableSpace),
+                          positioning:
+                              SnapPositioning.relativeToAvailableSpace),
                       builder: (context, state) {
                         return BottomServiceSheet(
                           servicesCartController: servicesCartController,
@@ -138,7 +141,8 @@ class HomeScreen extends StatelessWidget {
                   });
                 },
                 style: ButtonStyle(
-                  backgroundColor: const WidgetStatePropertyAll(RColors.primary),
+                  backgroundColor:
+                      const WidgetStatePropertyAll(RColors.primary),
                   shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
                   padding: const WidgetStatePropertyAll(
@@ -166,6 +170,21 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: FloatingActionButton(
+          onPressed: () {
+            Get.to(() => ChatBotPage());
+          },
+          backgroundColor: RColors.primary,
+          child: const Icon(
+            Icons.chat,
+            color: RColors.white,
+            size: 36,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -182,7 +201,8 @@ class ServiceCard extends StatelessWidget {
     return Container(
       // Remove fixed height to let content decide the height
       width: MediaQuery.of(context).size.width * 0.4,
-      padding: const EdgeInsets.symmetric(horizontal: 8), // Reduced padding
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      // Reduced padding
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: RColors.lightGrey,
@@ -196,8 +216,10 @@ class ServiceCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align to the left
-        mainAxisSize: MainAxisSize.min, // Ensure the column only takes up as much space as needed
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // Align to the left
+        mainAxisSize: MainAxisSize.min,
+        // Ensure the column only takes up as much space as needed
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
@@ -226,10 +248,11 @@ class ServiceCard extends StatelessWidget {
               fontSize: 13,
               color: RColors.darkGrey,
             ),
-            maxLines: 2,  // Limit description to 2 lines to avoid overflow
-            overflow: TextOverflow.ellipsis,  // Handle long text overflow
+            maxLines: 2, // Limit description to 2 lines to avoid overflow
+            overflow: TextOverflow.ellipsis, // Handle long text overflow
           ),
-          const SizedBox(height: 8), // Controlled space between description and price
+          const SizedBox(height: 8),
+          // Controlled space between description and price
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -249,8 +272,10 @@ class ServiceCard extends StatelessWidget {
                 onTap: () {
                   servicesCartController.addItemToCart(service);
                 },
-                splashColor: Colors.blue.withOpacity(0.3), // Optional: Customize splash color
-                highlightColor: Colors.blue.withOpacity(0.1), // Optional: Customize highlight color
+                splashColor: Colors.blue.withOpacity(0.3),
+                // Optional: Customize splash color
+                highlightColor: Colors.blue.withOpacity(0.1),
+                // Optional: Customize highlight color
                 child: Container(
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
@@ -271,9 +296,6 @@ class ServiceCard extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class CustomHomeNavigationDrawer extends StatelessWidget {
   const CustomHomeNavigationDrawer({super.key});
@@ -303,20 +325,20 @@ class CustomHomeNavigationDrawer extends StatelessWidget {
             Obx(() {
               final networkImage = controller.user.value.profilePicture;
               final image =
-              networkImage.isNotEmpty ? networkImage : RImages.user;
+                  networkImage.isNotEmpty ? networkImage : RImages.user;
 
               return controller.imageUploading.value
                   ? const RShimmerEffect(
-                width: 80,
-                height: 80,
-                radius: 80,
-              )
+                      width: 80,
+                      height: 80,
+                      radius: 80,
+                    )
                   : RCircularImage(
-                image: image,
-                isNetworkImage: networkImage.isNotEmpty,
-                width: 80,
-                height: 80,
-              );
+                      image: image,
+                      isNetworkImage: networkImage.isNotEmpty,
+                      width: 80,
+                      height: 80,
+                    );
             }),
             const SizedBox(
               height: 6,
